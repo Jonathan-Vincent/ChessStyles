@@ -1,10 +1,9 @@
 
-
-
 // set the dimensions and margins of the graph
-var margin = {top: 10, right: 100, bottom: 40, left: 50},
-    width = 800 - margin.left - margin.right,
-    height = 800 - margin.top - margin.bottom;
+var margin = {top: 10, right: 10, bottom: 10, left: 10},
+
+    width = d3.select('#plot_area').node().offsetWidth - margin.left - margin.right,
+    height = d3.select('#plot_area').node().offsetWidth - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 var Svg = d3.select('#plot_area')
@@ -13,7 +12,8 @@ var Svg = d3.select('#plot_area')
        Svg.attr("transform", d3.event.transform)
 
     })
-    .scaleExtent([1, 20]))
+    .scaleExtent([1, 20])
+    .extent([[0, 0], [width, height]]))
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
 
@@ -30,7 +30,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
     .range([ 0, width ])
   Svg.append("g")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x).tickSize(-height*1.3).ticks(10))
+    .call(d3.axisBottom(x).tickSize(-height*1.03).ticks(10))
     .select(".domain").remove()
 
   // Add Y axis
@@ -39,7 +39,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
     .range([ height, 0])
     .nice()
   Svg.append("g")
-    .call(d3.axisLeft(y).tickSize(-width*1.3).ticks(10))
+    .call(d3.axisLeft(y).tickSize(-width*1.03).ticks(10))
     .select(".domain").remove()
 
   // Customization
@@ -62,6 +62,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       .style('font-family', 'sans-serif')
       .text("Y-Component")
 
+console.log(d3.select('#plot_area').node());
       // Add a tooltip div. Here I define the general feature of the tooltip: stuff that do not depend on the data point.
       // Its opacity is set to 0: we don't see it by default.
       var tooltip = d3.select("#plot_area")
@@ -75,6 +76,19 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
         .style("padding", "10px")
         .style('font-family', 'sans-serif')
 
+      var selected = d3.select("#plot_area")
+          .append("div")
+          .style("opacity", 1)
+          .attr("class", "tooltip")
+          .style("background-color", "white")
+          .style("border", "solid")
+          .style("border-width", "1px")
+          .style("border-radius", "5px")
+          .style("padding", "5px")
+          .style('font-family', 'sans-serif')
+          .html('No game selected')
+          .style("left", d3.select('#plot_area').node().left + "px")
+          .style("top", d3.select('#plot_area').node().bottom + "px")
 
 
       // A function that change this tooltip when the user hover a point.
@@ -86,9 +100,20 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
 
       var mousemove = function(d) {
         tooltip
-          .html("Player: " + d.Player + "<br>" + d.PGN)
-          .style("left", width-40 + "px") // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
-          .style("top", 50 + "px")
+          .html("Player: " + d.Player)
+          .style("left", (d3.event.pageX + 16) + "px")
+          .style("top", (d3.event.pageY + 16) + "px")
+      }
+
+      var mouseleave = function(d) {
+        tooltip
+          .style("opacity", 0)
+      }
+
+      var mouseclick = function(d) {
+        selected
+          .html("Selected Game: " + d.Player + "<br>" + d.PGN)
+        currentPGN = d.PGN
       }
 
       // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
@@ -111,7 +136,9 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       .attr("r", 1)
       .style("fill", function (d) { return color(d.Player) } )
       .on("mouseover", mouseover )
-      .on("mousemove", mousemove );
+      .on("mousemove", mousemove )
+      .on("mouseleave", mouseleave )
+      .on("click", mouseclick );
 
     // This function is gonna change the opacity and size of selected and unselected circles
     function update(){

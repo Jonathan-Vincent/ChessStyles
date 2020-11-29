@@ -6,25 +6,90 @@
 div.tooltip {
     position: absolute;
 }
+* {
+  box-sizing: border-box;
+}
+.menu {
+  float:left;
+  width:15%;
+  padding:30px;
+}
+.plot {
+  float:left;
+  width:42.5%;
+  padding:30px;
+}
+.board {
+  float:left;
+  width:42.5%;
+  padding:30px;
+}
+
 </style>
 
   <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <script src="https://d3js.org/d3.v4.js"></script>
+      <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU" crossorigin="anonymous">
+      <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+      <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js" integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js" integrity="sha384-s3XgLpvmHyscVpijnseAmye819Ee3yaGa8NxstkJVyA6nuDFjt59u1QvuEl/mecz" crossorigin="anonymous"></script>
+
   </head>
 
   <body>
-    <div>
-      <input type="checkbox" class="checkbox" value="DrNykterstein" checked>DrNykterstein
-      <input type="checkbox" class="checkbox" value="penguingim1" checked>penguingim1
-      <input type="checkbox" class="checkbox" value="Zhigalko_Sergei" checked>Zhigalko_Sergei
-      <input type="checkbox" class="checkbox" value="opperwezen" checked>opperwezen
-      <input type="checkbox" class="checkbox" value="Night-King96" checked>Night-King96
-      <input type="checkbox" class="checkbox" value="Ogrilla" checked>Ogrilla
-      <input type="checkbox" class="checkbox" value="Alexander_Zubov" checked>Alexander_Zubov
-      <input type="checkbox" class="checkbox" value="nihalsarin2004" checked>nihalsarin2004
-    </div>
 
-    <div id='plot_area'></div>
-    <script src='./plot.js'></script>
+<div style="background-color:#e5e5e5;padding:15px;text-align:center;">
+  <h1>Chess Styles</h1>
+</div>
+
+<div style="overflow:auto">
+
+  <div class="menu">
+
+        <script>
+        function toggle(source) {
+          checkboxes = document.getElementsByName('p');
+          for(var i=0, n=checkboxes.length;i<n;i++) {
+            checkboxes[i].checked = source.checked;
+          }
+        }
+        </script>
+
+        <input type="checkbox" class='checkbox' onClick="toggle(this)" checked /> Toggle All<br/>
+          <input type="checkbox" class="checkbox" name='p' value="DrNykterstein" checked>DrNykterstein<br/>
+          <input type="checkbox" class="checkbox" name='p' value="penguingim1" checked>penguingim1<br/>
+          <input type="checkbox" class="checkbox" name='p' value="Zhigalko_Sergei" checked>Zhigalko_Sergei<br/>
+          <input type="checkbox" class="checkbox" name='p' value="opperwezen" checked>opperwezen<br/>
+          <input type="checkbox" class="checkbox" name='p' value="Night-King96" checked>Night-King96<br/>
+          <input type="checkbox" class="checkbox" name='p' value="Ogrilla" checked>Ogrilla<br/>
+          <input type="checkbox" class="checkbox" name='p' value="Alexander_Zubov" checked>Alexander_Zubov<br/>
+          <input type="checkbox" class="checkbox" name='p' value="nihalsarin2004" checked>nihalsarin2004
+  </div>
+
+  <div class="plot">
+
+        <div id='plot_area' style="width: 100%"></div>
+        <script src='./plot.js'></script>
+
+  </div>
+
+  <div class="board">
+        <!--- Begin Example HTML ------------------------------------------------------>
+        <div id="myBoard" style="width: 90%"></div>
+        <button id="startPositionBtn">Start</button>
+        <button id="Prev">Back</button>
+        <button id="Next">Forward</button><br/>
+        <label>PGN:</label>
+        <div id="pgn"></div>
+        <!--- End Example HTML -------------------------------------------------------->
+
+        <script src ='./goThroughGame.js'></script>
+
+  </div>
+</div>
+
+
+
   </body>
 </html>
