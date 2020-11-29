@@ -34,29 +34,33 @@ div.tooltip {
       <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
       <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js" integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js" integrity="sha384-s3XgLpvmHyscVpijnseAmye819Ee3yaGa8NxstkJVyA6nuDFjt59u1QvuEl/mecz" crossorigin="anonymous"></script>
-
+      <script>
+      var currentPGN = '';
+      </script>
   </head>
 
   <body>
 
-<div style="background-color:#e5e5e5;padding:15px;text-align:center;">
-  <h1>Chess Styles</h1>
-</div>
+    <div style="background-color:#e5e5e5;padding:1px;text-align:center;">
+      <h1>Chess Styles</h1>
+    </div>
 
-<div style="overflow:auto">
+    <div style="overflow:auto">
 
-  <div class="menu">
+      <div class="menu">
 
         <script>
         function toggle(source) {
           checkboxes = document.getElementsByName('p');
+          let change = new Event('change');
           for(var i=0, n=checkboxes.length;i<n;i++) {
-            checkboxes[i].checked = source.checked;
+            checkboxes[i].checked = source.checked
+            checkboxes[i].dispatchEvent(change);
           }
         }
         </script>
 
-        <input type="checkbox" class='checkbox' onClick="toggle(this)" checked /> Toggle All<br/>
+          <input type="checkbox" class='toggleAll' onClick="toggle(this)" checked />Toggle All<br/>
           <input type="checkbox" class="checkbox" name='p' value="DrNykterstein" checked>DrNykterstein<br/>
           <input type="checkbox" class="checkbox" name='p' value="penguingim1" checked>penguingim1<br/>
           <input type="checkbox" class="checkbox" name='p' value="Zhigalko_Sergei" checked>Zhigalko_Sergei<br/>
@@ -79,6 +83,7 @@ div.tooltip {
         <div id="myBoard" style="width: 90%"></div>
         <button id="startPositionBtn">Start</button>
         <button id="Prev">Back</button>
+        <button id="Play">Play</button>
         <button id="Next">Forward</button><br/>
         <label>PGN:</label>
         <div id="pgn"></div>

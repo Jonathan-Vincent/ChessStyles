@@ -4,7 +4,7 @@
 
 var board = null
 var game = new Chess()
-var mypgn = ('Nc3 h5 Nb1 h4 Nc3 Rh5 Nb1').split(' ')
+var mypgn = currentPGN.split(' ')
 var pos = 0
 var $pgn = $('#pgn')
 
@@ -18,6 +18,12 @@ function makeNextMove () {
   board.position(game.fen())
   pos++;
   $pgn.html(game.pgn())
+}
+
+function play () {
+  makeNextMove()
+  if (pos >= mypgn.length) return
+  setTimeout(play, 500)
 }
 
 function undoMove () {
@@ -41,7 +47,8 @@ function returnToStart () {
 
 board = Chessboard('myBoard', 'start')
 
-$('#Next').on('click', makeNextMove)
 $('#Prev').on('click', undoMove)
+$('#Play').on('click', play)
+$('#Next').on('click', makeNextMove)
 $('#startPositionBtn').on('click', returnToStart)
 // --- End Example JS ----------------------------------------------------------

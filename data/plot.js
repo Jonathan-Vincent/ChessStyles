@@ -1,6 +1,6 @@
 
 // set the dimensions and margins of the graph
-var margin = {top: 10, right: 10, bottom: 10, left: 10},
+var margin = {top: 10, right: 0, bottom: 40, left: 30},
 
     width = d3.select('#plot_area').node().offsetWidth - margin.left - margin.right,
     height = d3.select('#plot_area').node().offsetWidth - margin.top - margin.bottom;
@@ -62,7 +62,6 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       .style('font-family', 'sans-serif')
       .text("Y-Component")
 
-console.log(d3.select('#plot_area').node());
       // Add a tooltip div. Here I define the general feature of the tooltip: stuff that do not depend on the data point.
       // Its opacity is set to 0: we don't see it by default.
       var tooltip = d3.select("#plot_area")
@@ -80,15 +79,16 @@ console.log(d3.select('#plot_area').node());
           .append("div")
           .style("opacity", 1)
           .attr("class", "tooltip")
+          .style('width', d3.select('#plot_area').node().offsetWidth + "px")
           .style("background-color", "white")
           .style("border", "solid")
           .style("border-width", "1px")
           .style("border-radius", "5px")
           .style("padding", "5px")
           .style('font-family', 'sans-serif')
-          .html('No game selected')
           .style("left", d3.select('#plot_area').node().left + "px")
           .style("top", d3.select('#plot_area').node().bottom + "px")
+          .html('No game selected')
 
 
       // A function that change this tooltip when the user hover a point.
@@ -114,6 +114,9 @@ console.log(d3.select('#plot_area').node());
         selected
           .html("Selected Game: " + d.Player + "<br>" + d.PGN)
         currentPGN = d.PGN
+        mypgn = currentPGN.split(' ')
+        pos = 0
+        returnToStart ()
       }
 
       // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
@@ -130,41 +133,40 @@ console.log(d3.select('#plot_area').node());
     .data(data)
     .enter()
     .append("circle")
-      .attr("class",function(d){ return d.Player })
+      .attr("class",function(d) { return d.Player })
       .attr("cx", function (d) { return x(d.X); } )
       .attr("cy", function (d) { return y(d.Y); } )
-      .attr("r", 1)
       .style("fill", function (d) { return color(d.Player) } )
       .on("mouseover", mouseover )
       .on("mousemove", mousemove )
       .on("mouseleave", mouseleave )
-      .on("click", mouseclick );
+      .on("click", mouseclick )
+      .attr("r", 1)
+
 
     // This function is gonna change the opacity and size of selected and unselected circles
     function update(){
 
-      // For each check box:
-      d3.selectAll(".checkbox").each(function(d){
+      // For the check box:
         cb = d3.select(this);
+        checked = cb.property("checked")
         grp = cb.property("value")
 
         // If the box is check, I show the group
-        if(cb.property("checked")){
-          Svg.selectAll("."+grp).style("opacity", 1)
+        if(checked){
+          Svg.selectAll("."+grp)
+              .attr('r',1)
+
 
         // Otherwise I hide it
         }else{
-          Svg.selectAll("."+grp).style("opacity", 0)
+          Svg.selectAll("."+grp)
+              .attr('r',0)
         }
-
-      })
     }
-
 
     // When a button change, I run the update function
     d3.selectAll(".checkbox").on("change",update);
 
-    // And I initialize it at the beginning
-    update()
 
 })
