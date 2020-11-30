@@ -1,2 +1,2 @@
 # ChessStyles
-Classifying Chess Styles based on lichess data
+Classifying Chess Styles based on Lichess data

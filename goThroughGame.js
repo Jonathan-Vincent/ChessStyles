@@ -7,6 +7,7 @@ var game = new Chess()
 var mypgn = currentPGN.split(' ')
 var pos = 0
 var $pgn = $('#pgn')
+var playing = false
 
 function makeNextMove () {
   if (pos == mypgn.length) return
@@ -21,9 +22,23 @@ function makeNextMove () {
 }
 
 function play () {
+  if (playing) {
+    playing = false
+  }else
+  {
+  playing = true
+  iterate()
+}
+}
+
+function iterate () {
+  if (playing) {
   makeNextMove()
-  if (pos >= mypgn.length) return
-  setTimeout(play, 500)
+  if (pos >= mypgn.length) {
+    playing = false
+    return}
+  setTimeout(iterate, 500)
+}
 }
 
 function undoMove () {
