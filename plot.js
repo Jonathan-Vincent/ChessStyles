@@ -13,7 +13,8 @@ var Svg = d3.select('#plot_area')
 
     })
     .scaleExtent([1, 20])
-    .extent([[0, 0], [width, height]]))
+    .extent([[0, 0], [width, height]])
+    .translateExtent([[-100,-100], [width+100, height+100]]))
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
 
@@ -26,11 +27,11 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
 
   // Add X axis
   var x = d3.scaleLinear()
-    .domain([-1.25, 1])
+    .domain([-1, 1])
     .range([ 0, width ])
   Svg.append("g")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x).tickSize(-height*1.03).ticks(10))
+    .call(d3.axisBottom(x).tickSize(-height*1.03).ticks(10).tickFormat(""))
     .select(".domain").remove()
 
   // Add Y axis
@@ -39,28 +40,11 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
     .range([ height, 0])
     .nice()
   Svg.append("g")
-    .call(d3.axisLeft(y).tickSize(-width*1.03).ticks(10))
+    .call(d3.axisLeft(y).tickSize(-width*1.03).ticks(10).tickFormat(""))
     .select(".domain").remove()
 
   // Customization
   Svg.selectAll(".tick line").attr("stroke", "#EBEBEB")
-
-  // Add X axis label:
-  Svg.append("text")
-      .attr("text-anchor", "end")
-      .attr("x", width)
-      .attr("y", height + margin.top + 20)
-      .style('font-family', 'sans-serif')
-      .text("X-Component");
-
-  // Y axis label:
-  Svg.append("text")
-      .attr("text-anchor", "end")
-      .attr("transform", "rotate(-90)")
-      .attr("y", -margin.left+20)
-      .attr("x", -margin.top)
-      .style('font-family', 'sans-serif')
-      .text("Y-Component")
 
       // Add a tooltip div. Here I define the general feature of the tooltip: stuff that do not depend on the data point.
       // Its opacity is set to 0: we don't see it by default.
