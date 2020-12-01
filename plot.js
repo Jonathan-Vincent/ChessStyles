@@ -22,11 +22,11 @@ var Svg = d3.select('#plot_area')
           "translate(" + margin.left + "," + margin.top + ")")
 
 //Read the data
-d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/white_xy.csv", function(data) {
+d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/sum40_xy.csv", function(data) {
 
   // Add X axis
   var x = d3.scaleLinear()
-    .domain([-2, 2.7])
+    .domain([-1.25, 1])
     .range([ 0, width ])
   Svg.append("g")
     .attr("transform", "translate(0," + height + ")")
@@ -35,7 +35,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
 
   // Add Y axis
   var y = d3.scaleLinear()
-    .domain([-2.5, 3])
+    .domain([-1, 1])
     .range([ height, 0])
     .nice()
   Svg.append("g")
