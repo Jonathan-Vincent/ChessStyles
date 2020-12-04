@@ -22,6 +22,8 @@ var Svg = d3.select('#plot_area')
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")")
 
+
+
 //Read the data
 d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/sum40_xy.csv", function(data) {
 
@@ -109,8 +111,8 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
   // Color scale: give me a specie name, I return a color
   var color = d3.scaleOrdinal()
     .domain(['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
-           'Night-King96','Ogrilla','Alexander_Zubov','nihalsarin2004'])
-    .range(["#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#e500ac"])
+           'Night-King96','Ogrilla','Alexander_Zubov','nihalsarin2004','user'])
+    .range(["#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#e500ac",'#000000'])
 
   // Add dots
   var circles = Svg.selectAll(".dot")
@@ -121,6 +123,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       .attr("cx", function (d) { return x(d.X); } )
       .attr("cy", function (d) { return y(d.Y); } )
       .style("fill", function (d) { return color(d.Player) } )
+      .style("opacity", 1 )
       .on("mouseover", mouseover )
       .on("mousemove", mousemove )
       .on("mouseleave", mouseleave )
@@ -149,8 +152,40 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
         }
     }
 
-    // When a button change, I run the update function
-    d3.selectAll(".checkbox").on("change",update);
+    function importPGN(){
+      inputPGN = document.getElementById("userInput").value;
+      valchess = new Chess()
 
+      if (valchess.load_pgn(inputPGN,{ sloppy: true })) {
+        document.getElementById("result").innerHTML = 'PGN accepted';
+      }else {
+        document.getElementById("result").innerHTML = 'PGN not accepted';
+        return
+      }
+
+      console.log(inputPGN)
+      inputPGN = valchess.history().join(' ')
+
+      data.push({X: Math.random().toString(), Y: Math.random().toString(), Player: "user", PGN: inputPGN})
+      console.log(data[data.length - 1])
+      circles
+        .data(data)
+        .enter()
+        .merge(circles)
+        .append("circle")
+          .attr("class",function(d) { return d.Player })
+          .attr("cx", function (d) { return x(d.X); } )
+          .attr("cy", function (d) { return y(d.Y); } )
+          .style("fill", function (d) { return color(d.Player) } )
+          .on("mouseover", mouseover )
+          .on("mousemove", mousemove )
+          .on("mouseleave", mouseleave )
+          .on("click", mouseclick )
+          .attr("r", 5)
+    }
+
+    // When a button change, run the update function
+    d3.selectAll(".checkbox").on("change",update);
+    d3.select("#submitted").on("click",importPGN);
 
 })
