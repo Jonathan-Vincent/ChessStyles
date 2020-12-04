@@ -164,10 +164,21 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       }
 
       console.log(inputPGN)
-      inputPGN = valchess.history().join(' ')
+      inputPGN = valchess.history()
 
-      data.push({X: Math.random().toString(), Y: Math.random().toString(), Player: "user", PGN: inputPGN})
+      var movefreq = new Array(1445).fill(0);
+
+      for(var i = 0; i < 41; i++) {
+        if (i % 2 === 0) turn = 'white'
+        else turn = 'black'
+        var move =  turn + inputPGN[i];
+        console.log(move,index_move.move);
+
+      }
+
+      data.push({X: Math.random().toString(), Y: Math.random().toString(), Player: "user", PGN: inputPGN.join(' ')})
       console.log(data[data.length - 1])
+      console.log(index_move);
       circles
         .data(data)
         .enter()

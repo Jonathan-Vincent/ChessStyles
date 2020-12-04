@@ -37,6 +37,18 @@ div.tooltip {
       <script>
       var currentPGN = '';
       var inputPGN = '';
+      var compdict = {};
+      var meandict = {};
+      var index_move = {};
+      fetch("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/compdict.json")
+      .then((resp) => resp.json())
+      .then(data => compdict = data)
+      fetch("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/index_move.json")
+      .then((resp) => resp.json())
+      .then(data => index_move = data)
+      fetch("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/meandict.json")
+      .then((resp) => resp.json())
+      .then(data =>  meandict = data)
       </script>
   </head>
 
