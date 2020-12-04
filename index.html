@@ -34,6 +34,7 @@ div.tooltip {
       <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
       <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js" integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js" integrity="sha384-s3XgLpvmHyscVpijnseAmye819Ee3yaGa8NxstkJVyA6nuDFjt59u1QvuEl/mecz" crossorigin="anonymous"></script>
+      <script src="https://unpkg.com/mathjs@8.1.0/lib/browser/math.js"></script>
       <script>
       var currentPGN = '';
       var inputPGN = '';
@@ -43,9 +44,9 @@ div.tooltip {
       fetch("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/compdict.json")
       .then((resp) => resp.json())
       .then(data => compdict = data)
-      fetch("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/index_move.json")
+      fetch("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/move_index.json")
       .then((resp) => resp.json())
-      .then(data => index_move = data)
+      .then(data => move_index = data)
       fetch("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/meandict.json")
       .then((resp) => resp.json())
       .then(data =>  meandict = data)

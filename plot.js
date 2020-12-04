@@ -22,7 +22,9 @@ var Svg = d3.select('#plot_area')
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")")
 
-
+function addvector(a,b){
+  return a.map((e,i) => e + b[i]);
+}
 
 //Read the data
 d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/sum40_xy.csv", function(data) {
@@ -167,18 +169,29 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       inputPGN = valchess.history()
 
       var movefreq = new Array(1445).fill(0);
-
+      var move = 0
       for(var i = 0; i < 41; i++) {
-        if (i % 2 === 0) turn = 'white'
+        if (i % 2 === 0) {
+          turn = 'white'
+          //calculate coords after move 8,10,12,...,40
+          if (i>7) {
+            console.log(i,meandict)
+            console.log(i,meandict[i]);
+            normmovefreq = addvector(movefreq,meandict[i])
+            xpca = math.dot(normmovefreq,compdict[i])
+            console.log(move,xpca)
+          }
+        }
         else turn = 'black'
-        var move =  turn + inputPGN[i];
-        console.log(move,index_move.move);
+        move =  turn + inputPGN[i].toLowerCase().replace('x','').replace('+','');
+        movefreq[move_index[move]] = 1
+
 
       }
 
       data.push({X: Math.random().toString(), Y: Math.random().toString(), Player: "user", PGN: inputPGN.join(' ')})
       console.log(data[data.length - 1])
-      console.log(index_move);
+      console.log(move_index);
       circles
         .data(data)
         .enter()
