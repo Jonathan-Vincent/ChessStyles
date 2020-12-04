@@ -36,6 +36,7 @@ div.tooltip {
       <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js" integrity="sha384-s3XgLpvmHyscVpijnseAmye819Ee3yaGa8NxstkJVyA6nuDFjt59u1QvuEl/mecz" crossorigin="anonymous"></script>
       <script>
       var currentPGN = '';
+      var inputPGN = '';
       </script>
   </head>
 
@@ -68,7 +69,27 @@ div.tooltip {
           <input type="checkbox" class="checkbox" name='p' value="Night-King96" checked>Night-King96<br/>
           <input type="checkbox" class="checkbox" name='p' value="Ogrilla" checked>Ogrilla<br/>
           <input type="checkbox" class="checkbox" name='p' value="Alexander_Zubov" checked>Alexander_Zubov<br/>
-          <input type="checkbox" class="checkbox" name='p' value="nihalsarin2004" checked>nihalsarin2004
+          <input type="checkbox" class="checkbox" name='p' value="nihalsarin2004" checked>nihalsarin2004<br/><br>
+
+          <script>
+          function validate() {
+            inputPGN = document.getElementById("userInput").value
+            valchess = new Chess()
+            if (valchess.load_pgn(inputPGN,{ sloppy: true })) {
+              document.getElementById("result").innerHTML = 'PGN accepted';
+              var validated = true
+            }else {
+              document.getElementById("result").innerHTML = 'PGN not accepted';
+            }
+          }
+          </script>
+
+          <form id="PGNform" onsubmit="return false">
+          <textarea style=width:90%;height:200px;resize:none form='PGNform' placeholder='Enter PGN here' id="userInput"></textarea>
+          <input   style=width:90% type="submit" id='submitted' onClick='validate()'>
+          </form>
+          <span id="result"></span>
+
   </div>
 
   <div class="plot">
