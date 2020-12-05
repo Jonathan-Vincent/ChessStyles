@@ -8,43 +8,50 @@ var margin = {top: 10, right: 0, bottom: 40, left: 30},
 // append the svg object to the body of the page
 var Svg = d3.select('#plot_area')
   .append("svg")
-  .  call(d3.zoom().on("zoom", function () {
-       Svg.attr("transform", d3.event.transform)
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
 
-    })
-    .scaleExtent([1, 20])
-    .extent([[0, 0], [width, height]])
-    .translateExtent([[-100,-100], [width+100, height+100]]))
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+Svg.call(d3.zoom()
+.scaleExtent([1, 8])
+.extent([[0, 0], [width, height]])
+.translateExtent([[-100,-100], [width+100, height+100]])
+.on("zoom", zoom))
 
-  .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")")
+g = Svg.append("g")
+.attr("transform",
+"translate(" + margin.left + "," + margin.top + ")")
+
+function zoom() {
+  g.attr("transform", d3.event.transform);
+}
 
 //Read the data
-d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/sum40_xy.csv", function(data) {
+d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/unnormed_sum40_xy.csv", function(bigdata) {
+  data = []
+  for (i = 0; i < bigdata.length; i=i+5) {
+    data.push(bigdata[i]);
+  }
 
   // Add X axis
   var x = d3.scaleLinear()
-    .domain([-1, 1])
+    .domain([-7, 7])
     .range([ 0, width ])
-  Svg.append("g")
+  g.append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x).tickSize(-height*1.03).ticks(10).tickFormat(""))
     .select(".domain").remove()
 
   // Add Y axis
   var y = d3.scaleLinear()
-    .domain([-1, 1])
+    .domain([-7, 7])
     .range([ height, 0])
     .nice()
-  Svg.append("g")
+  g.append("g")
     .call(d3.axisLeft(y).tickSize(-width*1.03).ticks(10).tickFormat(""))
     .select(".domain").remove()
 
   // Customization
-  Svg.selectAll(".tick line").attr("stroke", "#EBEBEB")
+  g.selectAll(".tick line").attr("stroke", "#EBEBEB")
 
       // Add a tooltip div. Here I define the general feature of the tooltip: stuff that do not depend on the data point.
       // Its opacity is set to 0: we don't see it by default.
@@ -113,7 +120,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
     .range(["#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#e500ac",'#000000'])
 
   // Add dots
-  Svg.selectAll(".dot")
+  circles = g.selectAll("circle")
     .data(data)
     .enter()
     .append("circle")
@@ -138,13 +145,13 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
 
         // If the box is check, I show the group
         if(checked){
-          Svg.selectAll("."+grp)
+          g.selectAll("."+grp)
               .attr('r',1)
 
 
         // Otherwise I hide it
         }else{
-          Svg.selectAll("."+grp)
+          g.selectAll("."+grp)
               .attr('r',0)
         }
     }
@@ -191,23 +198,31 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       }
       }
 
-      data.push({X: (xsum/5.21579061209).toString(), Y: (ysum/6.16158285192).toString(), Player: "user", PGN: inputPGN.join(' ')})
+      data.push({X: (xsum).toString(), Y: (ysum).toString(), Player: "user", PGN: inputPGN.join(' ')})
 
-      Svg.selectAll(".dot")
-        .data(data)
-        .enter()
-        .append("circle")
-          .attr("class",function(d) { return d.Player })
-          .attr("cx", function (d) { return x(d.X); } )
-          .attr("cy", function (d) { return y(d.Y); } )
-          .attr("r", 1)
-          .style("fill", function (d) { return color(d.Player) } )
-          .on("mouseover", mouseover )
-          .on("mousemove", mousemove )
-          .on("mouseleave", mouseleave )
-          .on("click", mouseclick )
+      console.log(Svg.selectAll("circle").size())
 
-      //circles = circles.merge(circles)
+      circles = g.selectAll("circle")
+                  .data(data)
+
+      circles.exit().remove()
+
+      circles.enter()
+      .append("circle")
+      .attr("r", 0)
+      .attr("class",function(d) { return d.Player })
+      .attr("cx", function (d) { return x(d.X); } )
+      .attr("cy", function (d) { return y(d.Y); } )
+      .attr("r", 1)
+      .style("fill", function (d) { return color(d.Player) } )
+      .on("mouseover", mouseover )
+      .on("mousemove", mousemove )
+      .on("mouseleave", mouseleave )
+      .on("click", mouseclick );
+
+
+      console.log(Svg.selectAll("circle").size())
+
     }
 
     // When a button change, run the update function
