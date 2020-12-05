@@ -22,10 +22,6 @@ var Svg = d3.select('#plot_area')
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")")
 
-function addvector(a,b){
-  return a.map((e,i) => e + b[i]);
-}
-
 //Read the data
 d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/sum40_xy.csv", function(data) {
 
@@ -165,33 +161,38 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
         return
       }
 
-      console.log(inputPGN)
       inputPGN = valchess.history()
 
       var movefreq = new Array(1445).fill(0);
       var move = 0
-      for(var i = 0; i < 41; i++) {
+      var xsum = 0
+      var ysum = 0
+      var n = 0
+      var gamelength = inputPGN.length
+
+      for(var i = 0; i < Math.min(41,gamelength); i++) {
         if (i % 2 === 0) {
-          turn = 'white'
-          //calculate coords after move 8,10,12,...,40
           if (i>7) {
-            console.log(i,meandict)
-            console.log(i,meandict[i]);
-            normmovefreq = addvector(movefreq,meandict[i])
+            n++
+            normmovefreq = math.subtract(movefreq,meandict[i])
             xpca = math.dot(normmovefreq,compdict[i])
-            console.log(move,xpca)
+            ypca = math.dot(normmovefreq,compdict[i+1])
+
+            xsum = xsum + xpca/n
+            ysum = ysum + ypca/n
           }
+          turn = 'white'
+          move =  turn + inputPGN[i].toLowerCase().replace('x','').replace('+','');
+          movefreq[move_index[move]] = movefreq[move_index[move]] + 1
         }
-        else turn = 'black'
+        else {
+        turn = 'black'
         move =  turn + inputPGN[i].toLowerCase().replace('x','').replace('+','');
-        movefreq[move_index[move]] = 1
-
-
+        movefreq[move_index[move]] = movefreq[move_index[move]] + 1
+      }
       }
 
-      data.push({X: Math.random().toString(), Y: Math.random().toString(), Player: "user", PGN: inputPGN.join(' ')})
-      console.log(data[data.length - 1])
-      console.log(move_index);
+      data.push({X: (xsum/5.57028513095).toString(), Y: (ysum/6.33157052914).toString(), Player: "user", PGN: inputPGN.join(' ')})
       circles
         .data(data)
         .enter()
@@ -205,7 +206,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
           .on("mousemove", mousemove )
           .on("mouseleave", mouseleave )
           .on("click", mouseclick )
-          .attr("r", 5)
+          .attr("r", 2)
     }
 
     // When a button change, run the update function
