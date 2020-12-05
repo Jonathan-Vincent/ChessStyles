@@ -113,7 +113,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
     .range(["#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#e500ac",'#000000'])
 
   // Add dots
-  var circles = Svg.selectAll(".dot")
+  Svg.selectAll(".dot")
     .data(data)
     .enter()
     .append("circle")
@@ -121,7 +121,6 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       .attr("cx", function (d) { return x(d.X); } )
       .attr("cy", function (d) { return y(d.Y); } )
       .style("fill", function (d) { return color(d.Player) } )
-      .style("opacity", 1 )
       .on("mouseover", mouseover )
       .on("mousemove", mousemove )
       .on("mouseleave", mouseleave )
@@ -192,21 +191,23 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       }
       }
 
-      data.push({X: (xsum/5.57028513095).toString(), Y: (ysum/6.33157052914).toString(), Player: "user", PGN: inputPGN.join(' ')})
-      circles
+      data.push({X: (xsum/5.21579061209).toString(), Y: (ysum/6.16158285192).toString(), Player: "user", PGN: inputPGN.join(' ')})
+
+      Svg.selectAll(".dot")
         .data(data)
         .enter()
-        .merge(circles)
         .append("circle")
           .attr("class",function(d) { return d.Player })
           .attr("cx", function (d) { return x(d.X); } )
           .attr("cy", function (d) { return y(d.Y); } )
+          .attr("r", 1)
           .style("fill", function (d) { return color(d.Player) } )
           .on("mouseover", mouseover )
           .on("mousemove", mousemove )
           .on("mouseleave", mouseleave )
           .on("click", mouseclick )
-          .attr("r", 2)
+
+      //circles = circles.merge(circles)
     }
 
     // When a button change, run the update function

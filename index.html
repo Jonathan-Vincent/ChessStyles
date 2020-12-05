@@ -85,22 +85,9 @@ div.tooltip {
           <input type="checkbox" class="checkbox" name='p' value="nihalsarin2004" checked>nihalsarin2004<br/><br>
           <input type="checkbox" class="checkbox" name='p' value="user" checked>User<br/>
 
-          <script>
-          function validate() {
-            inputPGN = document.getElementById("userInput").value
-            valchess = new Chess()
-            if (valchess.load_pgn(inputPGN,{ sloppy: true })) {
-              document.getElementById("result").innerHTML = 'PGN accepted';
-              var validated = true
-            }else {
-              document.getElementById("result").innerHTML = 'PGN not accepted';
-            }
-          }
-          </script>
-
           <form id="PGNform" onsubmit="return false">
           <textarea style=width:90%;height:200px;resize:none form='PGNform' placeholder='Enter PGN here' id="userInput"></textarea>
-          <input   style=width:90% type="submit" id='submitted' onClick='validate()'>
+          <input   style=width:90% type="submit" id='submitted'>
           </form>
           <span id="result"></span>
 
