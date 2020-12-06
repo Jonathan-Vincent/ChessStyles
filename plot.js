@@ -15,6 +15,7 @@ g = Svg.append("g")
 
 Svg.call(d3.zoom()
 .scaleExtent([1, 10])
+.translateExtent([[-50,-50],[width+50,height+50]])
 .on("zoom", zoom))
 
 function zoom() {
@@ -22,14 +23,14 @@ function zoom() {
 g.attr("transform", d3.event.transform);
 }
 
-
+var player = 'None'
+var data = {}
 
 //Read the data
-d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/unnormed_sum40_xy.csv", function(data) {
-  //data = []
-  //for (i = 0; i < bigdata.length; i=i+5) {
-    //data.push(bigdata[i]);
-  //}
+d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/unnormed_sum40_xy.csv", function(d) {
+  data = d
+  //initialise circles
+  addcircs()})
 
   // Add X axis
   var x = d3.scaleLinear()
@@ -37,7 +38,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
     .range([ 0, width ])
   g.append("g")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x).tickSize(-height*1.03).ticks(10).tickFormat(""))
+    .call(d3.axisBottom(x).tickSize(-height).ticks(10).tickFormat(""))
     .select(".domain").remove()
 
   // Add Y axis
@@ -46,7 +47,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
     .range([ height, 0])
     .nice()
   g.append("g")
-    .call(d3.axisLeft(y).tickSize(-width*1.03).ticks(10).tickFormat(""))
+    .call(d3.axisLeft(y).tickSize(-width).ticks(10).tickFormat(""))
     .select(".domain").remove()
 
   // Customization
@@ -86,13 +87,13 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       var mouseover = function(d) {
         tooltip
           .style("opacity", 1)
-        selected
-          .html("Selected Game: " + d.Player + "<br>" + d.PGN)
       }
 
       var mousemove = function(d) {
+        inputPGN = d.PGN
+        player = d.Player
         tooltip
-          .html("Player: " + d.Player)
+          .html("Player: " + player)
           .style("left", (d3.event.pageX + 16) + "px")
           .style("top", (d3.event.pageY + 16) + "px")
       }
@@ -103,6 +104,9 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       }
 
       var mouseclick = function(d) {
+        selected.html("Player: " + player + '<br>' + inputPGN)
+        mypgn = inputPGN.split(' ')
+        returnToStart ()
       }
 
       // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
@@ -150,10 +154,30 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
         document.getElementById("result").innerHTML = 'PGN not accepted';
         return
       }
-
       //retrieve PGN in standardised form
       inputPGN = valchess.history()
+      newdata = addGame(inputPGN)
+      data = data.concat(newdata)
+      addcircs()
 
+    }
+
+    function importUserGames(userGamesList){
+      //add Lichess games
+      for(var i=0, n=userGamesList.length;i<n;i++) {
+        inputPGN = userGamesList[i]
+        valchess = new Chess()
+        state = valchess.load_pgn(inputPGN,{ sloppy: true })
+        if (state) {
+          inputPGN = valchess.history()
+          newdata = addGame(inputPGN)
+          data = data.concat(newdata)
+        }
+      }
+      addcircs()
+    }
+
+      function addGame(inputPGN) {
       //compute coords using PCA after moves 8,10,...,40
       var movefreq = new Array(1445).fill(0);
       var move = 0
@@ -183,10 +207,8 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
         movefreq[move_index[move]] = movefreq[move_index[move]] + 1
       }
       }
-
-      data = data.concat({X: (xsum).toString(), Y: (ysum).toString(), Player: "user", PGN: inputPGN.join(' ')})
-      addcircs()
-
+      newdata = {X: (xsum).toString(), Y: (ysum).toString(), Player: "user", PGN: inputPGN.join(' ')}
+      return newdata
     }
 
     function addcircs(){
@@ -210,11 +232,8 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
     console.log(g.selectAll("circle").size())
     }
 
-    //Initialise circles
-    addcircs()
-
     // When a button change, run the update function
     d3.selectAll(".checkbox").on("change",update);
     d3.select("#submitted").on("click",importPGN);
 
-})
+    Svg.on("click", mouseclick )

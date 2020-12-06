@@ -36,6 +36,7 @@ div.tooltip {
       <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js" integrity="sha384-s3XgLpvmHyscVpijnseAmye819Ee3yaGa8NxstkJVyA6nuDFjt59u1QvuEl/mecz" crossorigin="anonymous"></script>
       <script src="https://unpkg.com/mathjs@8.1.0/lib/browser/math.js"></script>
       <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <script src="./getLichessGames.js"></script>
       <script>
       var currentPGN = '';
       var inputPGN = '';
@@ -90,7 +91,14 @@ div.tooltip {
           <textarea style=width:90%;height:200px;resize:none form='PGNform' placeholder='Enter PGN here' id="userInput"></textarea>
           <input   style=width:90% type="submit" id='submitted'>
           </form>
-          <span id="result"></span>
+          <span id="result"></span><br>
+
+          Lichess Account:
+          <form id="LichessForm" onsubmit="return false">
+          <input style=width:90% form='LichessForm' placeholder='Username' id="usernameInput"></input>
+          <input   style=width:90% type="submit" id='LichessSubmitted' onclick="getLichessGames()">
+          </form>
+          <span id="usernameResult"></span>
 
   </div>
 
