@@ -208,6 +208,14 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
         move =  turn + inputPGN[i].toLowerCase().replace('x','').replace('+','');
         movefreq[move_index[move]] = movefreq[move_index[move]] + 1
       }
+
+      //if game is very short, compute PCA anyway
+      if (gamelength < 8){
+      normmovefreq = math.subtract(movefreq,meandict[8])
+      xsum = math.dot(normmovefreq,compdict[8])
+      ysum = math.dot(normmovefreq,compdict[9])
+      }
+
       }
       newdata = {X: (xsum).toString(), Y: (ysum).toString(), Player: "user", PGN: inputPGN.join(' ')}
       return newdata
