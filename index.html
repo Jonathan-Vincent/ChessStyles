@@ -16,12 +16,17 @@ div.tooltip {
 }
 .plot {
   float:left;
-  width:42.5%;
+  width:35%;
   padding:30px;
+}
+.preds {
+  float:left;
+  width:15%;
+  padding:10px;
 }
 .board {
   float:left;
-  width:42.5%;
+  width:35%;
   padding:30px;
 }
 
@@ -36,13 +41,17 @@ div.tooltip {
       <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js" integrity="sha384-s3XgLpvmHyscVpijnseAmye819Ee3yaGa8NxstkJVyA6nuDFjt59u1QvuEl/mecz" crossorigin="anonymous"></script>
       <script src="https://unpkg.com/mathjs@8.1.0/lib/browser/math.js"></script>
       <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.7.0/dist/tf.min.js"></script>
       <script src="./getLichessGames.js"></script>
+      <script src="./predictPGN.js"></script>
       <script>
       var currentPGN = '';
       var inputPGN = '';
       var compdict = {};
       var meandict = {};
       var index_move = {};
+      var model = {};
+      tf.loadLayersModel("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/whiteRNNmodel20/model.json").then(m => model = m);
       fetch("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/compdict.json")
       .then((resp) => resp.json())
       .then(data => compdict = data)
@@ -109,9 +118,53 @@ div.tooltip {
 
   </div>
 
+  <div class="preds">
+    <table id='predtable'>
+      <tr>
+        <th style={{
+                        textAlign:"left"
+                      }}>Player</th>
+        <th>%</th>
+      </tr>
+      <tr>
+        <td>DrNykterstein</td>
+        <td>0</td>
+      </tr>
+  <tr>
+    <td>penguingim1</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>Zhigalko_Sergei</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>opperwezen</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>Night-King96</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>Ogrilla</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>Alexander_Zubov</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>nihalsarin2004</td>
+    <td>0</td>
+  </tr>
+</table>
+
+  </div>
+
   <div class="board">
         <!--- Begin Example HTML ------------------------------------------------------>
-        <div id="myBoard" style="width: 90%"></div>
+        <div id="myBoard" style="width: 100%"></div>
         <button id="startPositionBtn">Start</button>
         <button id="Prev">Back</button>
         <button id="Play">Play</button>
@@ -121,8 +174,9 @@ div.tooltip {
         <!--- End Example HTML -------------------------------------------------------->
 
         <script src ='./goThroughGame.js'></script>
-
   </div>
+
+
 </div>
 
 

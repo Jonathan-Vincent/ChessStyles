@@ -107,6 +107,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
         selected.html("Player: " + player + '<br>' + inputPGN)
         mypgn = inputPGN.split(' ')
         returnToStart ()
+        predictPGN(mypgn)
       }
 
       // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
@@ -159,6 +160,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       newdata = addGame(inputPGN)
       data = data.concat(newdata)
       addcircs()
+      predictPGN(inputPGN)
 
     }
 
