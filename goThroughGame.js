@@ -18,6 +18,7 @@ function makeNextMove () {
   game.move(NextMove)
   board.position(game.fen())
   pos++;
+  predictPGN(mypgn.slice(0,pos))
   $pgn.html(game.pgn())
 }
 
@@ -34,7 +35,6 @@ function play () {
 function iterate () {
   if (playing) {
   makeNextMove()
-  predictPGN(mypgn.slice(0,pos))
   if (pos >= mypgn.length) {
     playing = false
     return}
@@ -49,6 +49,7 @@ function undoMove () {
   game.undo()
   board.position(game.fen())
   pos--;
+  predictPGN(mypgn.slice(0,pos))
   $pgn.html(game.pgn())
 }
 
@@ -58,6 +59,7 @@ function returnToStart () {
   game.reset()
   board.position(game.fen())
   pos = 0
+  predictPGN(mypgn.slice(0,pos))
   $pgn.html(game.pgn())
 }
 
