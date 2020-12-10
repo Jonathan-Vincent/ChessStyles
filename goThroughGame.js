@@ -18,7 +18,7 @@ function makeNextMove () {
   game.move(NextMove)
   board.position(game.fen())
   pos++;
-  predictPGN(mypgn.slice(0,pos))
+  if (game.turn() === 'b'){predictPGN(mypgn.slice(0,pos))}
   $pgn.html(game.pgn())
 }
 
@@ -49,7 +49,7 @@ function undoMove () {
   game.undo()
   board.position(game.fen())
   pos--;
-  predictPGN(mypgn.slice(0,pos))
+  if (game.turn() === 'w'){predictPGN(mypgn.slice(0,pos))}
   $pgn.html(game.pgn())
 }
 
@@ -59,7 +59,7 @@ function returnToStart () {
   game.reset()
   board.position(game.fen())
   pos = 0
-  predictPGN(mypgn.slice(0,pos))
+  if (game.turn() === 'b'){predictPGN(mypgn.slice(0,pos))}
   $pgn.html(game.pgn())
 }
 
@@ -102,7 +102,8 @@ function updateStatus () {
   }
 
   mypgn = game.history()
-  predictPGN(mypgn)
+  if (game.turn() === 'b'){predictPGN(mypgn)}
+
   $pgn.html(game.pgn())
   pos++
 }
