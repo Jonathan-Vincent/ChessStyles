@@ -51,7 +51,7 @@ div.tooltip {
       var meandict = {};
       var index_move = {};
       var model = {};
-      tf.loadLayersModel("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/whiteRNNmodel20/model.json").then(m => model = m);
+      tf.loadLayersModel("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/whiteRNNmodel20subseqs/model.json").then(m => model = m);
       fetch("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/compdict.json")
       .then((resp) => resp.json())
       .then(data => compdict = data)

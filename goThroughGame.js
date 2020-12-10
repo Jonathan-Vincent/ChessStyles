@@ -102,7 +102,7 @@ function updateStatus () {
   }
 
   mypgn = game.history()
-  predictPGN(game.history())
+  predictPGN(mypgn)
   $pgn.html(game.pgn())
   pos++
 }
