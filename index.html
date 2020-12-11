@@ -2,36 +2,6 @@
 
 <html>
 
-<style>
-div.tooltip {
-    position: absolute;
-}
-* {
-  box-sizing: border-box;
-}
-.menu {
-  float:left;
-  width:15%;
-  padding:10px;
-}
-.plot {
-  float:left;
-  width:35%;
-  padding:10px;
-}
-.preds {
-  float:left;
-  width:10%;
-  padding:10px;
-}
-.board {
-  float:left;
-  width:40%;
-  padding:10px;
-}
-
-</style>
-
   <head>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <script src="https://d3js.org/d3.v4.js"></script>
@@ -42,6 +12,9 @@ div.tooltip {
       <script src="https://unpkg.com/mathjs@8.1.0/lib/browser/math.js"></script>
       <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.7.0/dist/tf.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <link rel='stylesheet' href='./style.css'>
       <script src="./getLichessGames.js"></script>
       <script src="./predictPGN.js"></script>
       <script>
@@ -85,27 +58,41 @@ div.tooltip {
         }
         </script>
 
-          <input type="checkbox" class='toggleAll' onClick="toggle(this)" checked />Toggle All<br/>
-          <input type="checkbox" class="checkbox" name='p' value="DrNykterstein" checked>DrNykterstein<br/>
-          <input type="checkbox" class="checkbox" name='p' value="penguingim1" checked>penguingim1<br/>
-          <input type="checkbox" class="checkbox" name='p' value="Zhigalko_Sergei" checked>Zhigalko_Sergei<br/>
-          <input type="checkbox" class="checkbox" name='p' value="opperwezen" checked>opperwezen<br/>
-          <input type="checkbox" class="checkbox" name='p' value="Night-King96" checked>Night-King96<br/>
-          <input type="checkbox" class="checkbox" name='p' value="Ogrilla" checked>Ogrilla<br/>
-          <input type="checkbox" class="checkbox" name='p' value="Alexander_Zubov" checked>Alexander_Zubov<br/>
-          <input type="checkbox" class="checkbox" name='p' value="nihalsarin2004" checked>nihalsarin2004<br/><br>
-          <input type="checkbox" class="checkbox" name='p' value="user" checked>User<br/>
+          <div class="select-player">
+            <input type="checkbox" class='toggleAll' id="toggleAll" onClick="toggle(this)" checked />
+            <input type="checkbox" class="checkbox" name="p" id="DrNykterstein" value="DrNykterstein" checked/>
+            <input type="checkbox" class="checkbox" name="p" id="penguingim1" value="penguingim1" checked/>
+            <input type="checkbox" class="checkbox" name="p" id="Zhigalko_Sergei" value="Zhigalko_Sergei" checked/>
+            <input type="checkbox" class="checkbox" name="p" id="opperwezen" value="opperwezen" checked/>
+            <input type="checkbox" class="checkbox" name="p" id="Night-King96" value="Night-King96" checked/>
+            <input type="checkbox" class="checkbox" name="p" id="Ogrilla" value="Ogrilla" checked/>
+            <input type="checkbox" class="checkbox" name="p" id="Alexander_Zubov" value="Alexander_Zubov" checked/>
+            <input type="checkbox" class="checkbox" name="p" id="nihalsarin2004" value="nihalsarin2004" checked/>
+
+            <label for="toggleAll">Toggle all</label>
+
+            <label for="DrNykterstein">DrNykterstein</label>
+            <label for="penguingim1">penguingim1</label>
+            <label for="Zhigalko_Sergei">Zhigalko_Sergei</label>
+            <label for="opperwezen">opperwezen</label>
+            <label for="Night-King96">Night-King96</label>
+            <label for="Ogrilla">Ogrilla</label>
+            <label for="Alexander_Zubov">Alexander_Zubov</label>
+            <label for="nihalsarin2004">nihalsarin2004</label>
+
+
+          </div>
 
           <form id="PGNform" onsubmit="return false">
-          <textarea style=width:90%;height:200px;resize:none form='PGNform' placeholder='Enter PGN here' id="userInput"></textarea>
-          <input   style=width:90% type="submit" id='submitted'>
+          <textarea style=width:100%;height:200px;resize:none form='PGNform' placeholder='Enter PGN here' id="userInput"></textarea>
+          <input   style=width:100% type="submit" id='submitted'>
           </form>
           <span id="result"></span><br>
 
           Lichess Account:
           <form id="LichessForm" onsubmit="return false">
-          <input style=width:90% form='LichessForm' placeholder='Username' id="usernameInput"></input>
-          <input   style=width:90% type="submit" id='LichessSubmitted' onclick="getLichessGames()">
+          <input style=width:100% form='LichessForm' placeholder='Username' id="usernameInput"></input>
+          <input   style=width:100% type="submit" id='LichessSubmitted' onclick="getLichessGames()">
           </form>
           <span id="usernameResult"></span>
 

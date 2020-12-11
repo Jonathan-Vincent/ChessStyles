@@ -117,7 +117,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
   var color = d3.scaleOrdinal()
     .domain(['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
            'Night-King96','Ogrilla','Alexander_Zubov','nihalsarin2004','user'])
-    .range(["#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#e500ac",'#000000'])
+    .range(["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#bcbd22","#17becf",'#000000'])
 
 
     // change the size of selected and unselected circles

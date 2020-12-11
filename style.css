@@ -1,11 +1,69 @@
-#plot_area {
-    margin-left: 50px;
+
+div.tooltip {
+    position: absolute;
+}
+* {
+  box-sizing: border-box;
+}
+.menu {
+  float:left;
+  width:15%;
+  padding:10px;
+}
+.plot {
+  float:left;
+  width:35%;
+  padding:10px;
+}
+.preds {
+  float:left;
+  width:10%;
+  padding:10px;
+}
+.board {
+  float:left;
+  width:40%;
+  padding:10px;
+}
+.select-player  input{
+  display: none;
 }
 
-.points {
-    visibility: hidden;
+label {
+  display: block;
+  width: 100%;
+  height: 30px;
+  text-align: center;
+  border: 1px solid #ddd;
+  line-height: 30px;
+  cursor: pointer;
 }
 
-.points:hover {
-    visibility: visible;
+#DrNykterstein:checked ~ label[for="DrNykterstein"] {
+  background: #1f77b4;
+}
+#penguingim1:checked ~ label[for="penguingim1"] {
+  background: #ff7f0e;
+}
+#Zhigalko_Sergei:checked ~ label[for="Zhigalko_Sergei"] {
+  background: #2ca02c;
+}
+#opperwezen:checked ~ label[for="opperwezen"] {
+  background: #d62728;
+}
+#Night-King96:checked ~ label[for="Night-King96"] {
+  background: #9467bd;
+}
+#Ogrilla:checked ~ label[for="Ogrilla"] {
+  background: #8c564b;
+}
+#Alexander_Zubov:checked ~ label[for="Alexander_Zubov"] {
+  background: #bcbd22;
+}
+#nihalsarin2004:checked ~ label[for="nihalsarin2004"] {
+  background: #17becf;
+}
+#toggleAll:checked ~ label[for="toggleAll"] {
+  background: #000;
+  color: #fff;
 }
