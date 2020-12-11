@@ -1,6 +1,6 @@
 
 // set the dimensions and margins of the graph
-var margin = {top: 10, right: 0, bottom: 40, left: 30},
+var margin = {top: 10, right: 0, bottom: 10, left: 10},
 
     width = d3.select('#plot_area').node().offsetWidth - margin.left - margin.right,
     height = d3.select('#plot_area').node().offsetWidth - margin.top - margin.bottom;
@@ -114,10 +114,16 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
 
 
   // Color scale: returns a color for each player
-  var color = d3.scaleOrdinal()
-    .domain(['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
-           'Night-King96','Ogrilla','Alexander_Zubov','nihalsarin2004','user'])
-    .range(["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#bcbd22","#17becf",'#000000'])
+  var color = { 'DrNykterstein':"#1f77b4",
+  'penguingim1':"#ff7f0e",
+  'Zhigalko_Sergei':"#2ca02c",
+  'opperwezen':"#d62728",
+  'Night-King96':"#9467bd",
+  'Ogrilla':"#8c564b",
+  'Alexander_Zubov':"#bcbd22",
+  'nihalsarin2004':"#17becf"
+}
+
 
 
     // change the size of selected and unselected circles
@@ -147,7 +153,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       valchess = new Chess()
       state = valchess.load_pgn(inputPGN,{ sloppy: true })
 
-      console.log(g.selectAll("circle").size())
+      console.log(inputPGN)
       //check if PGN is valid
       if (state) {
         document.getElementById("result").innerHTML = 'PGN accepted';
@@ -165,6 +171,8 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
     }
 
     function importUserGames(userGamesList){
+
+      d3.selectAll(".checkbox").on("change",update);
       //add Lichess games
       for(var i=0, n=userGamesList.length;i<n;i++) {
         inputPGN = userGamesList[i]
@@ -217,7 +225,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       }
 
       }
-      newdata = {X: (xsum).toString(), Y: (ysum).toString(), Player: "user", PGN: inputPGN.join(' ')}
+      newdata = {X: (xsum).toString(), Y: (ysum).toString(), Player: username, PGN: inputPGN.join(' ')}
       return newdata
     }
 
@@ -234,7 +242,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       .attr("cx", function (d) { return x(d.X); } )
       .attr("cy", function (d) { return y(d.Y); } )
       .attr("r", 1)
-      .style("fill", function (d) { return color(d.Player) } )
+      .style("fill", function (d) { return color[(d.Player)]} )
       .on("mouseover", mouseover )
       .on("mousemove", mousemove )
       .on("mouseleave", mouseleave )
@@ -244,6 +252,5 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
 
     // When a button change, run the update function
     d3.selectAll(".checkbox").on("change",update);
-    d3.select("#submitted").on("click",importPGN);
 
     Svg.on("click", mouseclick )

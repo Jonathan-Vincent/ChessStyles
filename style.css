@@ -7,24 +7,21 @@ div.tooltip {
 }
 .menu {
   float:left;
-  width:15%;
+  width:12%;
   padding:10px;
 }
 .plot {
   float:left;
-  width:35%;
+  width:38%;
   padding:10px;
 }
-.preds {
-  float:left;
-  width:10%;
-  padding:10px;
-}
+
 .board {
   float:left;
-  width:40%;
+  width:50%;
   padding:10px;
 }
+
 .select-player  input{
   display: none;
 }
@@ -37,6 +34,19 @@ label {
   border: 1px solid #ddd;
   line-height: 30px;
   cursor: pointer;
+}
+
+.column {
+  float: left;
+  padding: 10px; /* Should be removed. Only for demonstration */
+}
+
+.left {
+  width: 75%;
+}
+
+.right {
+  width: 25%;
 }
 
 #DrNykterstein:checked ~ label[for="DrNykterstein"] {
@@ -66,4 +76,39 @@ label {
 #toggleAll:checked ~ label[for="toggleAll"] {
   background: #000;
   color: #fff;
+}
+
+/* Style the tab */
+.tab {
+  overflow: auto;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+/* Style the tab content */
+.tabcontent {
+  overflow: scroll;
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+  min-height: 80%;
 }

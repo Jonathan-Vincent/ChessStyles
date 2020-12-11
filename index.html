@@ -58,7 +58,7 @@
         }
         </script>
 
-          <div class="select-player">
+          <div class="select-player" id="select-player">
             <input type="checkbox" class='toggleAll' id="toggleAll" onClick="toggle(this)" checked />
             <input type="checkbox" class="checkbox" name="p" id="DrNykterstein" value="DrNykterstein" checked/>
             <input type="checkbox" class="checkbox" name="p" id="penguingim1" value="penguingim1" checked/>
@@ -80,21 +80,8 @@
             <label for="Alexander_Zubov">Alexander_Zubov</label>
             <label for="nihalsarin2004">nihalsarin2004</label>
 
-
           </div>
 
-          <form id="PGNform" onsubmit="return false">
-          <textarea style=width:100%;height:200px;resize:none form='PGNform' placeholder='Enter PGN here' id="userInput"></textarea>
-          <input   style=width:100% type="submit" id='submitted'>
-          </form>
-          <span id="result"></span><br>
-
-          Lichess Account:
-          <form id="LichessForm" onsubmit="return false">
-          <input style=width:100% form='LichessForm' placeholder='Username' id="usernameInput"></input>
-          <input   style=width:100% type="submit" id='LichessSubmitted' onclick="getLichessGames()">
-          </form>
-          <span id="usernameResult"></span>
 
   </div>
 
@@ -105,7 +92,61 @@
 
   </div>
 
-  <div class="preds">
+
+  <div class="board">
+    <div class="tab">
+      <button class="tablinks" onclick="switchTab(event, 'About')" id="defaultOpen" >About</button>
+      <button class="tablinks" onclick="switchTab(event, 'boardTab')" id="initBoard">Board</button>
+      <button class="tablinks" onclick="switchTab(event, 'Enter User')">Enter User</button>
+      <button class="tablinks" onclick="switchTab(event, 'View Games')">View Games</button>
+      <button class="tablinks" onclick="switchTab(event, 'Summary')">Summary</button>
+    </div>
+
+    <div id="About" class="tabcontent">
+      <p>The chart on the left shows 24,000 different Lichess bullet games.
+        Each game is represented by one dot, which is colour-coded by the player that played white.
+        Dots close together represent similar games.
+        For example, advanced French Defences tend to be in the top right, London System games right middle,
+        English openings in the bottom left, and so on.
+        Click on a dot to run through the game on the board.
+      </p>
+    </div>
+
+<div id="Enter User" class="tabcontent">
+
+  Lichess Account:
+  <form id="LichessForm" onsubmit="return false">
+  <input style=width:50% form='LichessForm' placeholder='Username' id="usernameInput"></input>
+  <input type="number" id="reqgames" name="reqgames" style=width:10% value=10 max='100' min='1'>
+  <input type="color" id="favcolor" name="favcolor" style=width:10% value="#000000"></input>
+  <input   style=width:100% type="submit" id='LichessSubmitted' onclick="getLichessGames()">
+</form>
+<form id="PGNform" onsubmit="return false">
+  <input style=width:100% form='PGNform' placeholder='Enter PGN here' id="userInput"></input>
+  <input   style=width:100% type="submit" id='submitted' onclick="importPGN()">
+</form>
+<span id="result"></span><br>
+<span id="usernameResult"></span>
+</div>
+
+<div id="View Games" class="tabcontent">
+</div>
+
+<div id="Summary" class="tabcontent">
+</div>
+
+<div id="boardTab" class="tabcontent">
+
+  <div class="column left">
+    <div id="myBoard"></div>
+    <button id="startPositionBtn">Start</button>
+    <button id="Prev">Back</button>
+    <button id="Play">Play</button>
+    <button id="Next">Forward</button><br/>
+    <label>PGN:</label>
+    <div id="pgn"></div>
+  </div>
+  <div class="column right" style="background-color:#eee;">
     <table id='predtable'>
       <tr>
         <th style={{
@@ -146,21 +187,12 @@
     <td>0</td>
   </tr>
 </table>
-
   </div>
 
-  <div class="board">
-        <!--- Begin Example HTML ------------------------------------------------------>
-        <div id="myBoard" style="width: 100%"></div>
-        <button id="startPositionBtn">Start</button>
-        <button id="Prev">Back</button>
-        <button id="Play">Play</button>
-        <button id="Next">Forward</button><br/>
-        <label>PGN:</label>
-        <div id="pgn"></div>
-        <!--- End Example HTML -------------------------------------------------------->
+</div>
 
-        <script src ='./goThroughGame.js'></script>
+
+  <script src ='./goThroughGame.js'></script>
   </div>
 
 

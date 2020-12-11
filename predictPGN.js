@@ -10,11 +10,9 @@ function predictPGN(inputPGN) {
     }
     j = move_i[thismove]
     indices[i] = j
-    console.log(i,inputPGN[i],j,indices)
   }
   let onehotseqs = tf.oneHot(indices,872).reshape([1, 20, 872])
   var prediction = model.predict(onehotseqs).dataSync()
-  console.log(prediction)
   var myTable = document.getElementById('predtable');
   for(var i=0, n= 8;i<n;i++) {
   myTable.rows[i+1].cells[1].innerHTML = Math.round(prediction[i]*1000)/10;
