@@ -44,7 +44,7 @@ axios(options)
     favcolor.value = '#' + newcolor
     document.getElementById("usernameResult").innerHTML = 'Imported ' + numgames.toString() + ' games'
 
-    $('#select-player').append('<input type="checkbox" class="checkbox" name="p" id="' +
+    $('#select-player').append('<input type="checkbox" class="checkbox" name="q" id="' +
      username +'" value="'+ username + '" onClick=changeColour(this) />')
     $('#select-player').append('<label for="' + username + '">' + username + '</label>')
     importUserGames(userGamesList)

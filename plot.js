@@ -124,7 +124,8 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
   'nihalsarin2004':"#17becf"
 }
 
-
+var toplist = ['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
+'Night-King96','Ogrilla','Alexander_Zubov','nihalsarin2004']
 
     // change the size of selected and unselected circles
     function update(){
@@ -182,9 +183,22 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
           inputPGN = valchess.history()
           newdata = addGame(inputPGN)
           data = data.concat(newdata)
+          var pred = predictPGN(inputPGN)
+          console.log(pred)
+          addRow(i,inputPGN,pred)
         }
       }
       addcircs()
+    }
+
+    function addRow(i,inputPGN,pred) {
+      $('#accordiontable').append('<tr class="accordion-toggle collapsed" id="accordion' + i +
+      '" data-toggle="collapse" data-parent="#accordion' +
+       i + '" href="#collapse' + i + '"><td class="expand-button"></td><td>' +
+      username + '</td><td>' + toplist[pred.indexOf(Math.max(...pred))] +
+      '</td><td>Win</td></tr><tr class="hide-table-padding"><td></td><td colspan="4"><div id="collapse' +
+      i + '" class="collapse p-3">' + inputPGN.join(' ') + '</div></td></tr>')
+
     }
 
       function addGame(inputPGN) {

@@ -17,4 +17,5 @@ function predictPGN(inputPGN) {
   for(var i=0, n= 8;i<n;i++) {
   myTable.rows[i+1].cells[1].innerHTML = Math.round(prediction[i]*1000)/10;
 }
+return prediction
 }
