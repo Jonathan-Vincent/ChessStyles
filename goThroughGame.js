@@ -28,7 +28,6 @@ var playing = false
 
 function makeNextMove () {
   if (pos == mypgn.length) return
-  console.log(pos,mypgn[pos])
 
   var NextMove = mypgn[pos]
 
@@ -61,7 +60,6 @@ function iterate () {
 
 function undoMove () {
   if (pos < 1) return
-  console.log(pos,mypgn[pos])
 
   game.undo()
   board.position(game.fen())
@@ -71,7 +69,6 @@ function undoMove () {
 }
 
 function returnToStart () {
-  console.log(pos,mypgn[pos])
 
   game.reset()
   board.position(game.fen())

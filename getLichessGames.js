@@ -1,5 +1,5 @@
 
-function getLichessGames() {
+async function getLichessGames() {
 
 username = document.getElementById("usernameInput").value
 

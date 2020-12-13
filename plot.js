@@ -84,6 +84,8 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
 
       // A function that change this tooltip when the user hover a point.
       // Its opacity is set to 1: we can now see it. Plus it set the text and position of tooltip depending on the datapoint (d)
+
+      var zoomtox, zoomtoy, active, clicked;
       var mouseover = function(d) {
         tooltip
           .style("opacity", 1)
@@ -92,6 +94,10 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       var mousemove = function(d) {
         inputPGN = d.PGN
         player = d.Player
+        zoomtox = x(d.X);
+        zoomtoy = y(d.Y);
+        d3.select(this).style("stroke", 'black');
+        active = this
         tooltip
           .html("Player: " + player)
           .style("left", (d3.event.pageX + 16) + "px")
@@ -99,16 +105,26 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       }
 
       var mouseleave = function(d) {
+        if (this != clicked){d3.select(this).style('stroke', 'transparent')}
         tooltip
           .style("opacity", 0)
       }
 
       var mouseclick = function(d) {
+        d3.select(clicked).style('stroke', 'transparent')
+        clicked = active
         selected.html("Player: " + player + '<br>' + inputPGN)
         mypgn = inputPGN.split(' ')
         returnToStart ()
         predictPGN(mypgn)
+
       }
+
+    function zoomtopoint() {
+      g.transition()
+      .duration(250)
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + 8 + ")translate(" + -zoomtox + "," + -zoomtoy + ")")
+    }
 
       // A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
 
@@ -133,7 +149,7 @@ var toplist = ['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
       // For the check box:
         cb = d3.select(this);
         checked = cb.property("checked")
-        grp = cb.property("value")
+        grp = cb.property("value")+ 'default'
 
         // If the box is check, I show the group
         if(checked){
@@ -172,10 +188,15 @@ var toplist = ['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
     }
 
     function importUserGames(userGamesList){
+      var predsummary = new Array(8).fill(0)
+      var predsums = new Array(8).fill(0)
+      var n = userGamesList.length
+      $('#Summary').append('<table id="' + username + 'Summarytable"><col style="width:40%"><col style="width:15%"><col style="width:15%"><col style="width:15%"><col style="width:15%"><tr><th style={{textAlign:"left"}}>' +
+      username + '</th><th>#</th><th>%</th><th>Sum of Probs</th><th>% Sum of Probs</th></tr>')
 
       d3.selectAll(".checkbox").on("change",update);
       //add Lichess games
-      for(var i=0, n=userGamesList.length;i<n;i++) {
+      for(var i=0, n;i<n;i++) {
         inputPGN = userGamesList[i]
         valchess = new Chess()
         state = valchess.load_pgn(inputPGN,{ sloppy: true })
@@ -184,22 +205,44 @@ var toplist = ['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
           newdata = addGame(inputPGN)
           data = data.concat(newdata)
           var pred = predictPGN(inputPGN)
-          console.log(pred)
+          topPred = pred.indexOf(Math.max(...pred))
+          predsummary[topPred] = predsummary[topPred] + 1
+          predsums = predsums.map((a, i) => a + pred[i])
           addRow(i,inputPGN,pred)
         }
+      }
+      for(var k=0, m=toplist.length;k<m;k++){
+        $('#' +username + 'Summarytable').append('<tr><td>' + toplist[k] +
+        '</td><td>' + predsummary[k].toString().slice(0, 4) + '</td><td>' +
+        (100*predsummary[k]/(n)).toString().slice(0, 4) + '</td><td>' +
+        predsums[k].toString().slice(0, 4) + '</td><td>' +
+        (100*predsums[k]/(n)).toString().slice(0, 4) +   '</td></tr>')
+
       }
       addcircs()
     }
 
     function addRow(i,inputPGN,pred) {
-      $('#accordiontable').append('<tr class="accordion-toggle collapsed" id="accordion' + i +
-      '" data-toggle="collapse" data-parent="#accordion' +
-       i + '" href="#collapse' + i + '"><td class="expand-button"></td><td>' +
+      //add row to View Games tab
+      var createPredtable = '<table id="'+ i +username + 'predtable"><tr><th style={{textAlign:"left"}}>Player</th><th>%</th></tr>'
+
+      for(var j=0, n=pred.length;j<n;j++) {
+        createPredtable = createPredtable.concat('<tr><td>' + toplist[j] +
+         '</td><td>' + (100*pred[j]).toFixed(5).toString().slice(0,5) + '</td></tr>')
+       }
+      createPredtable = createPredtable.concat('</table>')
+
+      $('#accordiontable').append('<tr class="accordion-toggle collapsed" id="accordion' + username + i +
+      '" data-toggle="collapse" data-parent="#accordion' + username + i +
+      '" href="#collapse' + username + i + '"><td class="expand-button"></td><td>' +
       username + '</td><td>' + toplist[pred.indexOf(Math.max(...pred))] +
       '</td><td>Win</td></tr><tr class="hide-table-padding"><td></td><td colspan="4"><div id="collapse' +
-      i + '" class="collapse p-3">' + inputPGN.join(' ') + '</div></td></tr>')
-
+      username + i + '" class="collapse p-3">' + '<div class="column right">' +  createPredtable + '</div>' +
+      '<div class="column left"><p>PGN: ' + inputPGN.join(' ') + '</p></div>' +
+      '</div></td></tr>')
     }
+
+
 
       function addGame(inputPGN) {
       //compute coords using PCA after moves 8,10,...,40
@@ -252,10 +295,12 @@ var toplist = ['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
 
       circles.enter()
       .append("circle")
-      .attr("class",function(d) { return d.Player })
+      .attr("class",function(d) { return d.Player + 'default'})
       .attr("cx", function (d) { return x(d.X); } )
       .attr("cy", function (d) { return y(d.Y); } )
       .attr("r", 1)
+      .attr("stroke", 'transparent')
+      .attr('stroke-width', 0.5)
       .style("fill", function (d) { return color[(d.Player)]} )
       .on("mouseover", mouseover )
       .on("mousemove", mousemove )
