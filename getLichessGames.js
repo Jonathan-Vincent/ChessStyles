@@ -32,11 +32,23 @@ axios(options)
     console.log(response.status)
     var data = response.data.split('\n')
     var userGamesList = []
+    var outcomesList = []
+    var outcome, winner;
     document.getElementById("usernameResult").innerHTML = 'Loading successful'
     for(var i=0, n=data.length-1;i<n;i++) {
       ligame = JSON.parse(data[i])
+      winner = ligame.winner
+      if (winner==='white'){
+        outcome = 'win'
+      }else if (winner === 'black') {
+        outcome = 'loss'
+      }else {
+        outcome = 'draw'
+      }
+      
       inputPGN = ligame.moves
       userGamesList = userGamesList.concat([inputPGN])
+      outcomesList = outcomesList.concat(outcome)
     }
     var numgames = userGamesList.length
     color[username] = favcolor.value
@@ -47,7 +59,7 @@ axios(options)
     $('#select-player').append('<input type="checkbox" class="checkbox" name="q" id="' +
      username +'" value="'+ username + '" onClick=changeColour(this) />')
     $('#select-player').append('<label for="' + username + '">' + username + '</label>')
-    importUserGames(userGamesList)
+    importUserGames(userGamesList,outcomesList)
     $('#' + username).click()
 
   }

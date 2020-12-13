@@ -187,17 +187,20 @@ var toplist = ['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
 
     }
 
-    function importUserGames(userGamesList){
+    function importUserGames(userGamesList,outcomesList){
       var predsummary = new Array(8).fill(0)
       var predsums = new Array(8).fill(0)
+      var wins = new Array(8).fill(0)
+      var winrate = 0
       var n = userGamesList.length
       $('#Summary').append('<table id="' + username + 'Summarytable"><col style="width:40%"><col style="width:15%"><col style="width:15%"><col style="width:15%"><col style="width:15%"><tr><th style={{textAlign:"left"}}>' +
-      username + '</th><th>#</th><th>%</th><th>Sum of Probs</th><th>% Sum of Probs</th></tr>')
+      username + '</th><th>#</th><th>%</th><th>Sum of Probs%</th><th>Win Rate%</th></tr>')
 
       d3.selectAll(".checkbox").on("change",update);
       //add Lichess games
       for(var i=0, n;i<n;i++) {
         inputPGN = userGamesList[i]
+        outcome = outcomesList[i]
         valchess = new Chess()
         state = valchess.load_pgn(inputPGN,{ sloppy: true })
         if (state) {
@@ -208,21 +211,30 @@ var toplist = ['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
           topPred = pred.indexOf(Math.max(...pred))
           predsummary[topPred] = predsummary[topPred] + 1
           predsums = predsums.map((a, i) => a + pred[i])
-          addRow(i,inputPGN,pred)
+          if (outcome === 'win'){
+            wins[topPred] = wins[topPred] + 1
+          }
+          addRow(i,inputPGN,pred,outcome)
         }
       }
       for(var k=0, m=toplist.length;k<m;k++){
+        if (predsummary[k] === 0){
+          winrate = '-'
+        }else {
+        winrate = (100*wins[k]/(predsummary[k])).toString().slice(0, 4)
+        }
+
         $('#' +username + 'Summarytable').append('<tr><td>' + toplist[k] +
         '</td><td>' + predsummary[k].toString().slice(0, 4) + '</td><td>' +
         (100*predsummary[k]/(n)).toString().slice(0, 4) + '</td><td>' +
-        predsums[k].toString().slice(0, 4) + '</td><td>' +
-        (100*predsums[k]/(n)).toString().slice(0, 4) +   '</td></tr>')
+        (100*predsums[k]/(n)).toString().slice(0, 4) + '</td><td>' +
+        winrate  +   '</td></tr>')
 
       }
       addcircs()
     }
 
-    function addRow(i,inputPGN,pred) {
+    function addRow(i,inputPGN,pred,outcome) {
       //add row to View Games tab
       var createPredtable = '<table id="'+ i +username + 'predtable"><tr><th style={{textAlign:"left"}}>Player</th><th>%</th></tr>'
 
@@ -236,7 +248,7 @@ var toplist = ['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
       '" data-toggle="collapse" data-parent="#accordion' + username + i +
       '" href="#collapse' + username + i + '"><td class="expand-button"></td><td>' +
       username + '</td><td>' + toplist[pred.indexOf(Math.max(...pred))] +
-      '</td><td>Win</td></tr><tr class="hide-table-padding"><td></td><td colspan="4"><div id="collapse' +
+      '</td><td>' + outcome +'</td></tr><tr class="hide-table-padding"><td></td><td colspan="4"><div id="collapse' +
       username + i + '" class="collapse p-3">' + '<div class="column right">' +  createPredtable + '</div>' +
       '<div class="column left"><p>PGN: ' + inputPGN.join(' ') + '</p></div>' +
       '</div></td></tr>')
