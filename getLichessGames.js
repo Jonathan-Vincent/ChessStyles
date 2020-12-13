@@ -3,14 +3,19 @@ async function getLichessGames() {
 
 username = document.getElementById("usernameInput").value
 console.log(username);
-console.log(!(username in toplist));
-console.log(username in toplist);
-console.log(username in toplist === false);
+console.log(toplist.includes(username));
+console.log(toplist)
 document.getElementById("usernameResult").innerHTML = 'Downloading games...'
 
-if ($('#' + username).length>0 && (username in toplist) ){
-document.getElementById("usernameResult").innerHTML = 'User already loaded in'
-return
+if (toplist.includes(username)) {
+  console.log(username)
+  if($('#' + username + '1').length>0){
+      document.getElementById("usernameResult").innerHTML = 'User already loaded in'
+      return
+  }
+} else if($('#' + username).length>0){
+  document.getElementById("usernameResult").innerHTML = 'User already loaded in'
+  return
 }
 
 if (document.getElementsByName('q').length>5){
@@ -38,6 +43,9 @@ const options = {
 axios(options)
 .catch(function (error) {document.getElementById("usernameResult").innerHTML = 'Loading failed'})
   .then(response => {
+    if (toplist.includes(username)) {
+      username = username + '1'
+    }
     console.log(response.status)
     var data = response.data.split('\n')
     var userGamesList = []
