@@ -103,22 +103,34 @@
     </div>
 
     <div id="About" class="tabcontent">
-      <p>The chart on the left shows 24,000 different Lichess bullet games.
-        Each game is represented by one dot, which is colour-coded by the player that played white.
-        Dots close together represent similar games.
-        For example, advanced French Defences tend to be in the top right, London System games right middle,
-        English openings in the bottom left, and so on.
-        Click on a dot to run through the game on the board.</p>
+      <ul>
+        <li>The chart on the left shows 24,000 different Lichess bullet games</li>
+        <li>Each game is represented by one dot, which is colour-coded by the player that played white</li>
+        <li>Dots close together represent similar games</li>
+        <li>For example, advanced French Defences tend to be in the top right,
+        English openings in the bottom left, and so on</li>
+        <li>Click on a dot to run through the game on the board</li>
+        <li>Enter a lichess username to load in their games as white</li>
+        <li>Every game is classified by the top 8 player most likely to play it</li>
+      </ul>
     </div>
 
 <div id="Enter User" class="tabcontent">
 
-  Lichess Account:
   <form id="LichessForm" onsubmit="return false">
-  <input style=width:50% form='LichessForm' placeholder='Username' id="usernameInput"></input>
-  <input type="number" id="reqgames" name="reqgames" style=width:10% value=10 max='100' min='1'>
-  <input type="color" id="favcolor" name="favcolor" style=width:10% value="#00FF84"></input>
-  <input   style=width:100% type="submit" id='LichessSubmitted' onclick="getLichessGames()">
+  <div style=width:50%;float:left>
+    <label for="usernameInput">Lichess Username: </label>
+    <input style=width:100% form='LichessForm' placeholder='Username' id="usernameInput"></input>
+  </div>
+  <div style=width:15%;float:left>
+    <label  for="reqgames">#Games</label>
+    <input  style=width:100% type="number" id="reqgames" name="reqgames"  value=10 max='100' min='1'>
+  </div>
+  <div style=float:left;width:10%>
+    <label  for="favcolor">Colour</label>
+    <input style=width:100% type="color" id="favcolor" name="favcolor" value="#00FF84"></input>
+  </div>
+  <input   style=width:50% type="submit" id='LichessSubmitted' onclick="getLichessGames()">
 </form>
 <!-- <form id="PGNform" onsubmit="return false">
   <input style=width:100% form='PGNform' placeholder='Enter PGN here' id="userInput"></input>
