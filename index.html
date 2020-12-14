@@ -103,6 +103,7 @@
     </div>
 
     <div id="About" class="tabcontent">
+      <h3>Chart:</h3>
       <ul>
         <li>The chart on the left shows 24,000 different Lichess bullet games</li>
         <li>Each game is represented by one dot, which is colour-coded by the player that played white</li>
@@ -111,12 +112,86 @@
         English openings in the bottom left, and so on</li>
         <li>Click on a dot to run through the game on the board</li>
         <li>Enter a lichess username to load in their games as white</li>
-        <li>Every game is classified by the top 8 player most likely to play it</li>
       </ul>
+      <h3>Classifier:</h3>
+      <ul>
+        <li>A <a href="https://en.wikipedia.org/wiki/Recurrent_neural_network">Recurrent Neural Network</a>
+        has been trained on the game data</li>
+        <li>Given a game as an input, it predicts the probability one of the top
+        8 players played this game</li>
+        <li>This probability distribution for each game is shown next to the board</li>
+        <li>On unseen games by one of the top 8 players, the classifier achieves a 75% accuracy</li>
+        <li>By comparison, a random classifier would average 12.5% accuracy</li>
+        <li>After entering a lichess user, you can see their most similar players in the summary tab</li>
+      </ul>
+      <h3>Player details:</h3>
+      <table id='playertable' style="width: 70%;">
+    <colgroup>
+       <col span="1" style="width: 35%;">
+       <col span="1" style="width: 30%;">
+       <col span="1" style="width: 35%;">
+    </colgroup>
+
+        <tr>
+          <th scope="col" style={{
+                          textAlign:"left"
+                          style=width:30%
+                        }}>Player</th>
+          <th scope="col" style={{
+                          textAlign:"left"
+                          style=width:30%
+                        }}>Real Name </th>
+          <th scope="col" style={{
+                          textAlign:"left"
+                          style=width:30%
+                        }}>Peak bullet rating</th>
+        </tr>
+        <tr>
+          <td><a href="https://lichess.org/@/DrNykterstein">DrNykterstein</a></td>
+          <td>Magnus Carlsen</td>
+          <td>3355</td>
+        </tr>
+    <tr>
+      <td><a href="https://lichess.org/@/penguingim1">penguingim1</a></td>
+      <td>Andrew Tang</td>
+      <td>3261</td>
+    </tr>
+    <tr>
+      <td><a href="https://lichess.org/@/Zhigalko_Sergei">Zhigalko_Sergei</a></td>
+      <td>Sergei Zhigalko</td>
+      <td>3163</td>
+    </tr>
+    <tr>
+      <td><a href="https://lichess.org/@/opperwezen">opperwezen</a></td>
+      <td>Vincent Rothuis</td>
+      <td>3110</td>
+    </tr>
+    <tr>
+      <td><a href="https://lichess.org/@/Night-King96">Night-King96</a></td>
+      <td>Oleksandr Bortnyk</td>
+      <td>3117</td>
+    </tr>
+    <tr>
+      <td><a href="https://lichess.org/@/Ogrilla">Ogrilla</a></td>
+      <td>Grigoriy Oparin</td>
+      <td>3020</td>
+    </tr>
+    <tr>
+      <td><a href="https://lichess.org/@/Alexander_Zubov">Alexander_Zubov</a></td>
+      <td>Alexander Zubov</td>
+      <td>3065</td>
+    </tr>
+    <tr>
+      <td><a href="https://lichess.org/@/nihalsarin2004">nihalsarin2004</a></td>
+      <td>Nihal Sarin</td>
+      <td>3146</td>
+    </tr>
+  </table>
     </div>
 
 <div id="Enter User" class="tabcontent">
-
+  Games can only be downloaded at a rate of 30/s from the Lichess server
+  <br><br>
   <form id="LichessForm" onsubmit="return false">
   <div style=width:50%;float:left>
     <label for="usernameInput">Lichess Username: </label>
@@ -124,7 +199,7 @@
   </div>
   <div style=width:15%;float:left>
     <label  for="reqgames">#Games</label>
-    <input  style=width:100% type="number" id="reqgames" name="reqgames"  value=100 max='3000' min='1'>
+    <input  style=width:100% type="number" id="reqgames" name="reqgames"  value=100 max='300' min='1'>
   </div>
   <div style=float:left;width:10%>
     <label  for="favcolor">Colour</label>

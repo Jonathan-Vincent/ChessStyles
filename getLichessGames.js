@@ -18,8 +18,8 @@ if (document.getElementsByName('q').length>5){
 document.getElementById("usernameResult").innerHTML = 'Cannot load in more players'
 return
 }
-if (reqgames.value>3000){
-document.getElementById("usernameResult").innerHTML = 'Cannot load more than 500 games'
+if (reqgames.value>300){
+document.getElementById("usernameResult").innerHTML = 'Cannot load more than 300 games'
 return
 }
 
