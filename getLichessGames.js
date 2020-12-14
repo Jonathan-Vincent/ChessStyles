@@ -2,13 +2,9 @@
 async function getLichessGames() {
 
 username = document.getElementById("usernameInput").value
-console.log(username);
-console.log(toplist.includes(username));
-console.log(toplist)
 document.getElementById("usernameResult").innerHTML = 'Downloading games...'
 
 if (toplist.includes(username)) {
-  console.log(username)
   if($('#' + username + '1').length>0){
       document.getElementById("usernameResult").innerHTML = 'User already loaded in'
       return
@@ -22,8 +18,8 @@ if (document.getElementsByName('q').length>5){
 document.getElementById("usernameResult").innerHTML = 'Cannot load in more players'
 return
 }
-if (reqgames.value>100){
-document.getElementById("usernameResult").innerHTML = 'Cannot load more than 100 games'
+if (reqgames.value>3000){
+document.getElementById("usernameResult").innerHTML = 'Cannot load more than 500 games'
 return
 }
 
@@ -53,6 +49,10 @@ axios(options)
     var outcome, winner;
     document.getElementById("usernameResult").innerHTML = 'Download successful'
     for(var i=0, n=data.length-1;i<n;i++) {
+      if (i%10===0){
+        document.getElementById("usernameResult").innerHTML = 'Processed ' + i +'games'
+        console.log(i)
+      }
       ligame = JSON.parse(data[i])
       winner = ligame.winner
       if (winner==='white'){
@@ -77,7 +77,6 @@ axios(options)
     $('#select-player').append('<label for="' + username + '">' + username + '</label>')
     importUserGames(userGamesList,outcomesList)
     $('#' + username).click()
-    document.getElementById("usernameResult").innerHTML = 'Imported ' + numgames.toString() + ' games'
 
   }
 )

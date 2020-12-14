@@ -192,18 +192,24 @@ var toplist = ['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
       var predsums = new Array(8).fill(0)
       var wins = new Array(8).fill(0)
       var winrate = 0
-      var n = userGamesList.length
+      var divisor = 0
+      var userGamesListLength = userGamesList.length
       $('#Summary').append('<table id="' + username + 'Summarytable"><col style="width:40%"><col style="width:15%"><col style="width:15%"><col style="width:15%"><col style="width:15%"><tr><th style={{textAlign:"left"}}>' +
       username + '</th><th>#</th><th>%</th><th>Sum of Probs%</th><th>Win Rate%</th></tr>')
 
       d3.selectAll(".checkbox").on("change",update);
       //add Lichess games
-      for(var i=0, n;i<n;i++) {
+      for(var i=0, userGamesListLength;i<userGamesListLength;i++) {
+        if (i%10===0){
+          document.getElementById("usernameResult").innerHTML = 'Processed ' + i +'games'
+          console.log(i)
+        }
         inputPGN = userGamesList[i]
         outcome = outcomesList[i]
         valchess = new Chess()
         state = valchess.load_pgn(inputPGN,{ sloppy: true })
         if (state) {
+          divisor++
           inputPGN = valchess.history()
           newdata = addGame(inputPGN)
           data = data.concat(newdata)
@@ -226,12 +232,14 @@ var toplist = ['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
 
         $('#' +username + 'Summarytable').append('<tr><td>' + toplist[k] +
         '</td><td>' + predsummary[k].toString().slice(0, 4) + '</td><td>' +
-        (100*predsummary[k]/(n)).toString().slice(0, 4) + '</td><td>' +
-        (100*predsums[k]/(n)).toString().slice(0, 4) + '</td><td>' +
+        (100*predsummary[k]/(divisor)).toString().slice(0, 4) + '</td><td>' +
+        (100*predsums[k]/(divisor)).toString().slice(0, 4) + '</td><td>' +
         winrate  +   '</td></tr>')
 
       }
       addcircs()
+
+      document.getElementById("usernameResult").innerHTML = 'Imported ' + divisor.toString() + ' games'
     }
 
     function addRow(i,inputPGN,pred,outcome) {
