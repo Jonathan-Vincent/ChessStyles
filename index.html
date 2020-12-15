@@ -3,6 +3,7 @@
 <html>
 
   <head>
+      <title>ChessStyles</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <script src="https://d3js.org/d3.v4.js"></script>
       <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU" crossorigin="anonymous">
@@ -39,8 +40,9 @@
 
   <body>
 
-    <div style="background-color:#e5e5e5;padding:1px;text-align:center;">
-      <h1>Chess Styles</h1>
+    <div style="background-color:#333;padding:1px">
+      <a style="float:right;color:#FFF" href="https://github.com/Jonathan-Vincent/ChessStyles" target="_blank">Github Documentation</a>
+      <h1 style="color:#FFF;text-align:center;">Chess Styles</h1>
     </div>
 
     <div style="overflow:auto">
@@ -57,6 +59,10 @@
           }
         }
         </script>
+
+
+        <label for="mySlider">Dot size:</label>
+        <input type="range" name="mySlider" id=mySlider min="0.75" max="3.75" step='0.5', value="1.25">
 
           <div class="select-player" id="select-player">
             <input type="checkbox" class='toggleAll' id="toggleAll" onClick="toggle(this)" checked />

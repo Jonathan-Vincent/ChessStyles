@@ -57,8 +57,8 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       // Its opacity is set to 0: we don't see it by default.
       var tooltip = d3.select("#plot_area")
         .append("div")
-        .style("opacity", 0)
         .attr("class", "tooltip")
+        .style("opacity", 1)
         .style("background-color", "white")
         .style("border", "solid")
         .style("border-width", "1px")
@@ -88,7 +88,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       var zoomtox, zoomtoy, active, clicked;
       var mouseover = function(d) {
         tooltip
-          .style("opacity", 1)
+          .style("display", 'block')
       }
 
       var mousemove = function(d) {
@@ -100,6 +100,7 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
         active = this
         tooltip
           .html("Player: " + player)
+          .style("display", 'block')
           .style("left", (d3.event.pageX + 16) + "px")
           .style("top", (d3.event.pageY + 16) + "px")
       }
@@ -107,7 +108,8 @@ d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data
       var mouseleave = function(d) {
         if (this != clicked){d3.select(this).style('stroke', 'transparent')}
         tooltip
-          .style("opacity", 0)
+          .style("display", 'none')
+
       }
 
       var mouseclick = function(d) {
@@ -145,6 +147,7 @@ var toplist = ['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
 
     // change the size of selected and unselected circles
     function update(){
+      var size = document.getElementById("mySlider").value
 
       // For the check box:
         cb = d3.select(this);
@@ -154,13 +157,16 @@ var toplist = ['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
         // If the box is check, I show the group
         if(checked){
           g.selectAll("."+grp)
-              .attr('r',1)
+              .attr('r',size)
+              .attr("class",grp + ' Shown')
+              .attr('stroke-width', size/2)
 
 
         // Otherwise I hide it
         }else{
           g.selectAll("."+grp)
               .attr('r',0)
+              .attr("class",grp + ' notShown')
         }
     }
 
@@ -307,6 +313,9 @@ var toplist = ['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
     }
 
     function addcircs(){
+      var size = document.getElementById("mySlider").value
+      console.log(size);
+
       circles = g
       .selectAll("circle")
       .data(data)
@@ -315,12 +324,12 @@ var toplist = ['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
 
       circles.enter()
       .append("circle")
-      .attr("class",function(d) { return d.Player + 'default'})
+      .attr("class",function(d) { return d.Player + 'default' + ' Shown'})
       .attr("cx", function (d) { return x(d.X); } )
       .attr("cy", function (d) { return y(d.Y); } )
-      .attr("r", 1)
+      .attr("r", size)
       .attr("stroke", 'transparent')
-      .attr('stroke-width', 0.5)
+      .attr('stroke-width', size/2)
       .style("fill", function (d) { return color[(d.Player)]} )
       .on("mouseover", mouseover )
       .on("mousemove", mousemove )
@@ -328,6 +337,19 @@ var toplist = ['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
 
     console.log(g.selectAll("circle").size())
     }
+
+    function changeSize(){
+      var size = document.getElementById("mySlider").value
+      g
+        .selectAll('.Shown')
+        .attr('r',size)
+        .attr('stroke-width', size/2)
+
+
+    }
+
+    // Listen to the slider
+    d3.select("#mySlider").on("change", changeSize)
 
     // When a button change, run the update function
     d3.selectAll(".checkbox").on("change",update);
