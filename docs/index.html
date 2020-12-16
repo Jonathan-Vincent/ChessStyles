@@ -25,14 +25,14 @@
       var meandict = {};
       var index_move = {};
       var model = {};
-      tf.loadLayersModel("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/src/data/whiteRNNmodel20sigmoid/model.json").then(m => model = m);
-      fetch("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/src/data/compdict.json")
+      tf.loadLayersModel("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/docs/data/whiteRNNmodel20sigmoid/model.json").then(m => model = m);
+      fetch("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/docs/data/compdict.json")
       .then((resp) => resp.json())
       .then(data => compdict = data)
-      fetch("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/src/data/move_index.json")
+      fetch("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/docs/data/move_index.json")
       .then((resp) => resp.json())
       .then(data => move_index = data)
-      fetch("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/src/data/meandict.json")
+      fetch("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/docs/data/meandict.json")
       .then((resp) => resp.json())
       .then(data =>  meandict = data)
       </script>

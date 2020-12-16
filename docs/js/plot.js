@@ -27,7 +27,7 @@ var player = 'None'
 var data = {}
 
 //Read the data
-d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/src/data/unnormed_sum40_xy.csv", function(d) {
+d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/docs/data/unnormed_sum40_xy.csv", function(d) {
   data = d
   //initialise circles
   addcircs()})
