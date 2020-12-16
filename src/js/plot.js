@@ -27,7 +27,7 @@ var player = 'None'
 var data = {}
 
 //Read the data
-d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/data/unnormed_sum40_xy.csv", function(d) {
+d3.csv("https://raw.githubusercontent.com/Jonathan-Vincent/ChessStyles/main/src/data/unnormed_sum40_xy.csv", function(d) {
   data = d
   //initialise circles
   addcircs()})
@@ -211,7 +211,6 @@ var toplist = ['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
         if (i%1===0){
           await new Promise(r => setTimeout(r, 2))
           document.getElementById("usernameResult").innerHTML = 'Processed ' + i +' games'
-          console.log(i)
         }
         inputPGN = userGamesList[i]
         outcome = outcomesList[i]
