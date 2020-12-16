@@ -44,15 +44,14 @@ axios(options)
     }
     console.log(response.status)
     var data = response.data.split('\n')
+    document.getElementById("usernameResult").innerHTML = 'Download successful'
+    return data
+  })
+    .then(data => {
     var userGamesList = []
     var outcomesList = []
     var outcome, winner;
-    document.getElementById("usernameResult").innerHTML = 'Download successful'
     for(var i=0, n=data.length-1;i<n;i++) {
-      if (i%10===0){
-        document.getElementById("usernameResult").innerHTML = 'Processed ' + i +'games'
-        console.log(i)
-      }
       ligame = JSON.parse(data[i])
       winner = ligame.winner
       if (winner==='white'){

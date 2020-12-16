@@ -193,21 +193,24 @@ var toplist = ['DrNykterstein','penguingim1','Zhigalko_Sergei','opperwezen',
 
     }
 
-    function importUserGames(userGamesList,outcomesList){
+    async function importUserGames(userGamesList,outcomesList){
       var predsummary = new Array(8).fill(0)
       var predsums = new Array(8).fill(0)
       var wins = new Array(8).fill(0)
       var winrate = 0
       var divisor = 0
       var userGamesListLength = userGamesList.length
+
+      document.getElementById("SummaryFiller").innerHTML = ''
       $('#Summary').append('<table id="' + username + 'Summarytable"><col style="width:40%"><col style="width:15%"><col style="width:15%"><col style="width:15%"><col style="width:15%"><tr><th style={{textAlign:"left"}}>' +
       username + '</th><th>#</th><th>%</th><th>Sum of Probs%</th><th>Win Rate%</th></tr>')
 
       d3.selectAll(".checkbox").on("change",update);
-      //add Lichess games
+      //add Lichess games in batches of 10
       for(var i=0, userGamesListLength;i<userGamesListLength;i++) {
-        if (i%10===0){
-          document.getElementById("usernameResult").innerHTML = 'Processed ' + i +'games'
+        if (i%1===0){
+          await new Promise(r => setTimeout(r, 2))
+          document.getElementById("usernameResult").innerHTML = 'Processed ' + i +' games'
           console.log(i)
         }
         inputPGN = userGamesList[i]
